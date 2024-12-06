@@ -81,7 +81,7 @@ void loop()
   {
     if (digitalRead(pinNotas[i]) == LOW)
     {
-      tone(buzzer, octava[i], 200);
+      tone(buzzer, octava[i], 100);
       Serial.println(i); // Enviar índice de tecla a Processing
     }
   }
@@ -92,43 +92,43 @@ void loop()
     String tecla = Serial.readStringUntil('\n');
 
     if (tecla == "0B")
-      tone(buzzer, octava[0], 200); //DO
+      tone(buzzer, octava[0], 100); //DO
     
     if (tecla == "1N")
-      tone(buzzer, octava[1], 200); //DO#
+      tone(buzzer, octava[1], 100); //DO#
 
     if (tecla == "1B")
-      tone(buzzer, octava[2], 200); //RE
+      tone(buzzer, octava[2], 100); //RE
 
     if (tecla == "2N")
-      tone(buzzer, octava[3], 200); //RE#
+      tone(buzzer, octava[3], 100); //RE#
 
     if (tecla == "2B")
-      tone(buzzer, octava[4], 200); //MI
+      tone(buzzer, octava[4], 100); //MI
 
     if (tecla == "3B")
-      tone(buzzer, octava[5], 200); //FA
+      tone(buzzer, octava[5], 100); //FA
 
     if (tecla == "4N")
-      tone(buzzer, octava[6], 200); //FA#
+      tone(buzzer, octava[6], 100); //FA#
 
     if (tecla == "4B")
-      tone(buzzer, octava[7], 200); //SOL
+      tone(buzzer, octava[7], 100); //SOL
 
     if (tecla == "5N")
-      tone(buzzer, octava[8], 200); //SOL#
+      tone(buzzer, octava[8], 100); //SOL#
 
     if (tecla == "5B")
-      tone(buzzer, octava[9], 200); //LA
+      tone(buzzer, octava[9], 100); //LA
 
     if (tecla == "6N")
-      tone(buzzer, octava[10], 200); //LA#
+      tone(buzzer, octava[10], 100); //LA#
 
     if (tecla == "6B")
-      tone(buzzer, octava[11], 200); //SI
+      tone(buzzer, octava[11], 100); //SI
 
     if (tecla == "7B")
-      tone(buzzer, octava[12], 200); //DO
+      tone(buzzer, octava[12], 100); //DO
 
       tecla = "";
   }
@@ -158,5 +158,74 @@ void cambioOctava(int octActual)
   for (int j = 0; j < 13; j++)
   {
     octava[j] = frecuencias[j];
+  }
+}
+
+void tocarDesdeArchivo()
+{
+ if (Serial.available() > 0) 
+ {
+    String entrada = Serial.readStringUntil('\n');  // Leer línea completa
+    entrada.trim();  // Elimina espacios en blanco al inicio y al final
+
+    // Separar la nota y la duración
+    int separador = entrada.indexOf(':');  // Encontrar el separador ":"
+    
+    if (separador != -1) 
+    {  // Verifica que el separador exista
+      String nota = entrada.substring(0, separador);  // Obtén la nota
+      String duracionStr = entrada.substring(separador + 1);  // Obtén la duración
+      
+      duracionStr.trim();  // Elimina espacios en blanco en la duración
+      int duracion = duracionStr.toInt();  // Convierte la duración a entero
+
+      // Imprime los resultados
+      println("Nota: " + nota + ", Duración: " + String(duracion));
+      
+      if (nota == "Do")
+      tone(buzzer, octava[0], duracion); //DO
+    
+      if (nota == "Do#")
+        tone(buzzer, octava[1], duracion); //DO#
+
+      if (nota == "Re")
+        tone(buzzer, octava[2], duracion); //RE
+
+      if (nota == "Re#")
+        tone(buzzer, octava[3], duracion); //RE#
+
+      if (nota == "Mi")
+        tone(buzzer, octava[4], duracion); //MI
+
+      if (nota == "Fa")
+        tone(buzzer, octava[5], duracion); //FA
+
+      if (nota == "Fa#")
+        tone(buzzer, octava[6], duracion); //FA#
+
+      if (nota == "Sol")
+        tone(buzzer, octava[7], duracion); //SOL 
+
+      if (nota == "Sol#")
+        tone(buzzer, octava[8], duracion); //SOL#
+
+      if (nota == "La")
+        tone(buzzer, octava[9], duracion); //LA
+
+      if (nota == "La#")
+        tone(buzzer, octava[10], duracion); //LA#
+
+      if (nota == "Si")
+        tone(buzzer, octava[11], duracion); //SI
+
+      if (nota == "DoA")
+        tone(buzzer, octava[12], duracion); //DO
+
+    } 
+    
+    else 
+      println("Error: Formato incorrecto. Debe ser 'Nota:Duración'");
+    
+
   }
 }
