@@ -1,5 +1,5 @@
 # Proyecto Final Informatica 2
-##Funcionalidades:
+## Funcionalidades:
 El proyecto final trata sobre un minipiano simulado con Arduino y Processing. Se puede tocar a través de los botones fisicos que simulan las teclas de un piano, como en el piano propuesto por Processing.
 Además se pueden cargar melodías propias en el código de Processing, en las funciones cargarMelodia1 (), cargarMelodia2 (), cargarMelodia3 ().
 ##Formato de la función melodía
