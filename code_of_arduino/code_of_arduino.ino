@@ -63,6 +63,7 @@ void loop()
       }
       cambioOctava(octActual);
       lastPress = millis();
+      Serial.println(-3);
     }
     if (digitalRead(octavaMenos) == LOW)
     {
@@ -73,6 +74,7 @@ void loop()
       }
       cambioOctava(octActual);
       lastPress = millis();
+      Serial.println(-2);
     }
   }
 
@@ -84,55 +86,152 @@ void loop()
       tone(buzzer, octava[i], 100);
       Serial.println(i); // Enviar índice de tecla a Processing
     }
+    /*else
+    {
+      Serial.println(-1);
+    }*/
   }
 
   // Recibir datos de Processing
+
   if (Serial.available() > 0)
   {
     String tecla = Serial.readStringUntil('\n');
-
-    if (tecla == "0B")
-      tone(buzzer, octava[0], 100); //DO
-    
-    if (tecla == "1N")
-      tone(buzzer, octava[1], 100); //DO#
-
-    if (tecla == "1B")
-      tone(buzzer, octava[2], 100); //RE
-
-    if (tecla == "2N")
-      tone(buzzer, octava[3], 100); //RE#
-
-    if (tecla == "2B")
-      tone(buzzer, octava[4], 100); //MI
-
-    if (tecla == "3B")
-      tone(buzzer, octava[5], 100); //FA
-
-    if (tecla == "4N")
-      tone(buzzer, octava[6], 100); //FA#
-
-    if (tecla == "4B")
-      tone(buzzer, octava[7], 100); //SOL
-
-    if (tecla == "5N")
-      tone(buzzer, octava[8], 100); //SOL#
-
-    if (tecla == "5B")
-      tone(buzzer, octava[9], 100); //LA
-
-    if (tecla == "6N")
-      tone(buzzer, octava[10], 100); //LA#
-
-    if (tecla == "6B")
-      tone(buzzer, octava[11], 100); //SI
-
-    if (tecla == "7B")
-      tone(buzzer, octava[12], 100); //DO
-
-      tecla = "";
+    tecla.trim();  // Eliminar espacios al inicio y final
+    procesarEntrada(tecla);  // Procesar la entrada
   }
+
 }
+
+
+
+// Función para procesar la entrada desde el puerto serie
+void procesarEntrada(String entrada) 
+{
+  if (entrada.indexOf(':') != -1) 
+    procesarNotaYDuracion(entrada); // Caso: tiene el carácter ":"
+  
+  else
+  procesarComandoSimple(entrada);// Caso: no tiene ":"
+  
+}
+
+// Función para procesar notas con duración (contiene ":")
+void procesarNotaYDuracion(String entrada) 
+{
+  int separador = entrada.indexOf(':');
+  String nota = entrada.substring(0, separador);  // Extraer nota
+  String duracionStr = entrada.substring(separador + 1);  // Extraer duración
+  duracionStr.trim();  // Eliminar espacios adicionales
+
+  int duracion = duracionStr.toInt();  // Convertir duración a entero
+  
+  // Ejecutar acción en base a la nota
+  if (nota == "Do")
+    tone(buzzer, octava[0], duracion);  // DO
+  
+  else if (nota == "Do#")
+    tone(buzzer, octava[1], duracion);  // DO#
+  
+  else if (nota == "Re")
+    tone(buzzer, octava[2], duracion);  // RE
+
+  else if (nota == "Re#")
+    tone(buzzer, octava[3], duracion);  // RE#
+
+  else if (nota == "Mi")
+    tone(buzzer, octava[4], duracion);  // MI
+
+  else if (nota == "Fa")
+    tone(buzzer, octava[5], duracion);  // fa
+
+  else if (nota == "Fa#")
+    tone(buzzer, octava[6], duracion);  // fa#
+
+  else if (nota == "Sol")
+    tone(buzzer, octava[7], duracion);  // Sol
+
+  else if (nota == "Sol#")
+    tone(buzzer, octava[8], duracion);  // sol#
+
+  else if (nota == "La")
+    tone(buzzer, octava[9], duracion);  // La
+
+  else if (nota == "La#")
+    tone(buzzer, octava[10], duracion);  // La#
+
+  else if (nota == "Si")
+    tone(buzzer, octava[11], duracion);  // Si
+
+  else if (nota == "Doa")
+    tone(buzzer, octava[12], duracion);  // MI
+
+  entrada ="";
+
+}
+
+// Función para procesar comandos simples
+void procesarComandoSimple(String comando) 
+{
+  if (comando == "0B")
+    tone(buzzer, octava[0], 100); //DO
+  
+  if (comando == "1N")
+    tone(buzzer, octava[1], 100); //DO#
+
+  if (comando == "1B")
+    tone(buzzer, octava[2], 100); //RE
+
+  if (comando == "2N")
+    tone(buzzer, octava[3], 100); //RE#
+
+  if (comando == "2B")
+    tone(buzzer, octava[4], 100); //MI
+
+  if (comando == "3B")
+    tone(buzzer, octava[5], 100); //FA
+
+  if (comando == "4N")
+    tone(buzzer, octava[6], 100); //FA#
+
+  if (comando == "4B")
+    tone(buzzer, octava[7], 100); //SOL
+
+  if (comando == "5N")
+    tone(buzzer, octava[8], 100); //SOL#
+
+  if (comando == "5B")
+    tone(buzzer, octava[9], 100); //LA
+
+  if (comando == "6N")
+    tone(buzzer, octava[10], 100); //LA#
+
+  if (comando == "6B")
+    tone(buzzer, octava[11], 100); //SI
+
+  if (comando == "7B")
+    tone(buzzer, octava[12], 100); //DO
+
+  if (comando == "-2")
+    octActual--;
+    if (octActual < 2)
+    {
+      octActual = 2;
+    }
+    cambioOctava(octActual);
+  
+  if (comando == "-3")
+    octActual++;
+    if (octActual > 6) 
+    {
+      octActual = 6;
+    }
+    cambioOctava(octActual);
+
+    comando = "";
+
+}
+
 
 void cambioOctava(int octActual)
 {
@@ -158,74 +257,5 @@ void cambioOctava(int octActual)
   for (int j = 0; j < 13; j++)
   {
     octava[j] = frecuencias[j];
-  }
-}
-
-void tocarDesdeArchivo()
-{
- if (Serial.available() > 0) 
- {
-    String entrada = Serial.readStringUntil('\n');  // Leer línea completa
-    entrada.trim();  // Elimina espacios en blanco al inicio y al final
-
-    // Separar la nota y la duración
-    int separador = entrada.indexOf(':');  // Encontrar el separador ":"
-    
-    if (separador != -1) 
-    {  // Verifica que el separador exista
-      String nota = entrada.substring(0, separador);  // Obtén la nota
-      String duracionStr = entrada.substring(separador + 1);  // Obtén la duración
-      
-      duracionStr.trim();  // Elimina espacios en blanco en la duración
-      int duracion = duracionStr.toInt();  // Convierte la duración a entero
-
-      // Imprime los resultados
-      println("Nota: " + nota + ", Duración: " + String(duracion));
-      
-      if (nota == "Do")
-      tone(buzzer, octava[0], duracion); //DO
-    
-      if (nota == "Do#")
-        tone(buzzer, octava[1], duracion); //DO#
-
-      if (nota == "Re")
-        tone(buzzer, octava[2], duracion); //RE
-
-      if (nota == "Re#")
-        tone(buzzer, octava[3], duracion); //RE#
-
-      if (nota == "Mi")
-        tone(buzzer, octava[4], duracion); //MI
-
-      if (nota == "Fa")
-        tone(buzzer, octava[5], duracion); //FA
-
-      if (nota == "Fa#")
-        tone(buzzer, octava[6], duracion); //FA#
-
-      if (nota == "Sol")
-        tone(buzzer, octava[7], duracion); //SOL 
-
-      if (nota == "Sol#")
-        tone(buzzer, octava[8], duracion); //SOL#
-
-      if (nota == "La")
-        tone(buzzer, octava[9], duracion); //LA
-
-      if (nota == "La#")
-        tone(buzzer, octava[10], duracion); //LA#
-
-      if (nota == "Si")
-        tone(buzzer, octava[11], duracion); //SI
-
-      if (nota == "DoA")
-        tone(buzzer, octava[12], duracion); //DO
-
-    } 
-    
-    else 
-      println("Error: Formato incorrecto. Debe ser 'Nota:Duración'");
-    
-
   }
 }
