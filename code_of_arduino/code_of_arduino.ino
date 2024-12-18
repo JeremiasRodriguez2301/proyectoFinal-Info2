@@ -13,8 +13,6 @@ int frecuencias4[] = {262, 277, 293, 311, 329, 349, 370, 392, 415, 440, 466, 494
 int frecuencias5[] = {523, 554, 587, 622, 659, 698, 740, 784, 830, 880, 932, 987, 1046};
 int frecuencias6[] = {1046, 1109, 1175, 1244, 1318, 1397, 1480, 1568, 1661, 1760, 1865, 1975, 2093};
 
-int *notas, *notasTemp;
-
 void setup() 
 {
   Serial.begin(9600);
@@ -64,10 +62,6 @@ void loop()
       tone(buzzer, octava[i], 100);
       Serial.println(i); // Enviar índice de tecla a Processing
     }
-    /*else
-    {
-      Serial.println(-1);
-    }*/
   }
 
   // Recibir datos de Processing
@@ -104,89 +98,64 @@ void procesarNotaYDuracion(String entrada)
   
   // Ejecutar acción en base a la nota
   if (nota == "Do")
-    tone(buzzer, octava[0], duracion);  // DO
+    tone(buzzer, octava[0], duracion);
   
   else if (nota == "DoS")
-    tone(buzzer, octava[1], duracion);  // DO#
+    tone(buzzer, octava[1], duracion);
   
   else if (nota == "Re")
-    tone(buzzer, octava[2], duracion);  // RE
+    tone(buzzer, octava[2], duracion);
 
   else if (nota == "ReS")
-    tone(buzzer, octava[3], duracion);  // RE#
+    tone(buzzer, octava[3], duracion);
 
   else if (nota == "Mi")
-    tone(buzzer, octava[4], duracion);  // MI
+    tone(buzzer, octava[4], duracion);
 
   else if (nota == "Fa")
-    tone(buzzer, octava[5], duracion);  // fa
+    tone(buzzer, octava[5], duracion);
 
   else if (nota == "FaS")
-    tone(buzzer, octava[6], duracion);  // fa#
+    tone(buzzer, octava[6], duracion);
 
   else if (nota == "Sol")
-    tone(buzzer, octava[7], duracion);  // Sol
+    tone(buzzer, octava[7], duracion);
 
   else if (nota == "SolS")
-    tone(buzzer, octava[8], duracion);  // sol#
+    tone(buzzer, octava[8], duracion);
 
   else if (nota == "La")
-    tone(buzzer, octava[9], duracion);  // La
+    tone(buzzer, octava[9], duracion);
 
   else if (nota == "LaS")
-    tone(buzzer, octava[10], duracion);  // La#
+    tone(buzzer, octava[10], duracion);
 
   else if (nota == "Si")
-    tone(buzzer, octava[11], duracion);  // Si
+    tone(buzzer, octava[11], duracion);
 
   else if (nota == "Do2")
-    tone(buzzer, octava[12], duracion);  // MI
+    tone(buzzer, octava[12], duracion);
 
   else if (nota == "Silencio")
     delay(duracion);
 
   entrada ="";
-
 }
 
 // Función para procesar comandos simples
 void procesarComandoSimple(String comando) 
 {
-  if (comando == "grabarMelodia")
-  {
-    Serial.println ("grabandoMelodia");
-      
-    for (int i = 0; i < 13; i++)
-    {
-      //if ()
-
-      if (digitalRead(pinNotas[i]) == LOW)
-      {
-        tone(buzzer, octava[i], 100);
-        Serial.print ("indice_Grabar, ");
-        Serial.println (i);
-      }  
-
-    }
-  }
-
-  else if (comando == "finalizarMelodia")
-  {
-    Serial.println ("grabacionFinalizada");
-  }
-
-
   if (comando == "0B")
     tone(buzzer, octava[0], 100); //DO
   
   if (comando == "1N")
-    tone(buzzer, octava[1], 100); //DO#
+    tone(buzzer, octava[1], 100); //DOs
 
   if (comando == "1B")
     tone(buzzer, octava[2], 100); //RE
 
   if (comando == "2N")
-    tone(buzzer, octava[3], 100); //RE#
+    tone(buzzer, octava[3], 100); //REs
 
   if (comando == "2B")
     tone(buzzer, octava[4], 100); //MI
@@ -195,19 +164,19 @@ void procesarComandoSimple(String comando)
     tone(buzzer, octava[5], 100); //FA
 
   if (comando == "4N")
-    tone(buzzer, octava[6], 100); //FA#
+    tone(buzzer, octava[6], 100); //FAs
 
   if (comando == "4B")
     tone(buzzer, octava[7], 100); //SOL
 
   if (comando == "5N")
-    tone(buzzer, octava[8], 100); //SOL#
+    tone(buzzer, octava[8], 100); //SOLs
 
   if (comando == "5B")
     tone(buzzer, octava[9], 100); //LA
 
   if (comando == "6N")
-    tone(buzzer, octava[10], 100); //LA#
+    tone(buzzer, octava[10], 100); //LAs
 
   if (comando == "6B")
     tone(buzzer, octava[11], 100); //SI
